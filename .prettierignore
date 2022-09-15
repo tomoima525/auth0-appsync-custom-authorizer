@@ -1,0 +1,23 @@
+.pnp.cjs
+.pnp.loader.mjs
+.prettierrc
+jest.config.base.js
+jest.config.js
+
+build
+coverage
+
+# yarn
+.yarn/**/*
+# web
+packages/**/.next
+
+# cdk
+cdk.json
+cdk.out
+cdk.out/*
+lib/*.d.ts
+**/*.js
+
+# graphql
+graphql/*
