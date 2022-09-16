@@ -5,16 +5,16 @@ import {
   CfnOutput,
   Expiration,
   Duration,
-  aws_dynamodb as dynamodb,
 } from "aws-cdk-lib";
 import * as appsync from "@aws-cdk/aws-appsync-alpha";
 import { Construct } from "constructs";
 import * as path from "path";
 import { RetentionDays } from "aws-cdk-lib/aws-logs";
 import { eventGetResolver } from "./resolvers/eventGet";
+import { AUDIENCE, JWKS_URI, TOKEN_ISSUER } from "./config";
 
 interface AppSyncSetupProps {}
-
+console.log("==== ", { TOKEN_ISSUER, AUDIENCE, JWKS_URI });
 export class AppSyncSetup extends Construct {
   constructor(scope: Construct, id: string, props: AppSyncSetupProps) {
     super(scope, id);
@@ -35,13 +35,18 @@ export class AppSyncSetup extends Construct {
       "AuthorizerHandler",
       {
         runtime: lambda.Runtime.NODEJS_16_X,
-        memorySize: 256,
+        memorySize: 128,
         handler: "handler",
         entry: path.join(
           `${__dirname}/../`,
           "functions",
           "authorizer/index.ts",
         ),
+        environment: {
+          AUDIENCE,
+          TOKEN_ISSUER,
+          JWKS_URI,
+        },
         logRetention: RetentionDays.ONE_WEEK,
       },
     );
@@ -54,6 +59,7 @@ export class AppSyncSetup extends Construct {
           authorizationType: appsync.AuthorizationType.LAMBDA,
           lambdaAuthorizerConfig: {
             handler: authorizerLambda,
+            validationRegex: `^Bearer [-0-9a-zA-z\.]*$`,
           },
         },
         // for admin API

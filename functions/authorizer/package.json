@@ -1,0 +1,8 @@
+{
+  "name": "authorizer",
+  "packageManager": "yarn@3.2.1",
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^2.1.4"
+  }
+}
