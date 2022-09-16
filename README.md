@@ -4,6 +4,8 @@ This repository showcases authorizing access against AppSync graphql with a cust
 - lambda authorizer verifies access token on the request header
 - If verified, AppSync resolves access to AWS resources
 
+
+
 ## Preparation
 
 - Create Auth0 API for authorization. See [this link](https://auth0.com/docs/customize/integrations/aws/aws-api-gateway-custom-authorizers#create-an-auth0-api)
@@ -27,7 +29,7 @@ yarn cdk:deploy
 
 ## Testing
 
-Generate token. See [this link](https://auth0.com/docs/secure/tokens/access-tokens/get-access-tokens)
+- Generate token. See [this link](https://auth0.com/docs/secure/tokens/access-tokens/get-access-tokens)
 
 ```
 curl --request POST \
@@ -41,7 +43,15 @@ curl --request POST \
 
 `YOUR_API_IDENTIFIER` will be the one you set at Preparation section
 
+- Go to AWS console => AppSync
+- Request Query using the token generated. Make sure to set `Bearer` as a prefix  
+
+<img width="1087" alt="appsync-query" src="https://user-images.githubusercontent.com/6277118/190568183-c606eb20-6da3-412a-b58e-ef32a30f04cc.png">
+
+
 ## References
 
 https://aws.amazon.com/blogs/mobile/appsync-lambda-auth/
+https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html
 https://auth0.com/docs/customize/integrations/aws/aws-api-gateway-custom-authorizers
+https://github.com/auth0-samples/jwt-rsa-aws-custom-authorizer
