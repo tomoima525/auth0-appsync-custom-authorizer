@@ -1,0 +1,24 @@
+scalar AWSDateTime
+
+type Event {
+id: ID!
+name: String
+createdAt: AWSDateTime
+}
+
+input EventCreateInput {
+  name: String
+}
+type Query {
+  eventGet(id: ID!): Event
+  eventList: [Event]
+}
+
+type Mutation {
+  eventCreate(input: EventCreateInput!): Event
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}

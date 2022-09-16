@@ -1,0 +1,12 @@
+overwrite: true
+schema:
+  - "graphql/schema.graphql"
+documents: null
+generates:
+  graphql/graphql.ts:
+    plugins:
+      - "typescript"
+      - "typescript-resolvers"
+config:
+  scalars:
+    AWSDateTime: string
