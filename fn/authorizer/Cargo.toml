@@ -1,0 +1,20 @@
+[package]
+name = "authorizer"
+version = "0.1.0"
+edition = "2021"
+
+
+[dependencies]
+
+jsonwebtoken = "8.1.1"
+lambda_runtime = "0.6.1"
+lazy_static = "1.4.0"
+regex = "1"
+reqwest = { version="0.11.12", features=["native-tls-vendored"] }
+serde = "1.0.136"
+serde_json = "1.0.85"
+tokio = { version = "1", features = ["macros"] }
+tracing = { version = "0.1", features = ["log"] }
+tracing-subscriber = { version = "0.3", default-features = false, features = ["fmt"] }
+helpers = { path = "../helpers" }
+

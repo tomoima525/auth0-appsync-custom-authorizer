@@ -1,0 +1,6 @@
+[workspace]
+
+members = [
+  "fn/authorizer",
+  "fn/helpers"
+]
