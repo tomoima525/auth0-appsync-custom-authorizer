@@ -41,7 +41,26 @@ curl --request POST \
 
 `YOUR_API_IDENTIFIER` will be the one you set at Preparation section
 
-## References
+# Write Lambda in Rust
+
+### Setup your environment
+
+Install [cargo-lambda](https://github.com/cargo-lambda/cargo-lambda)
+
+### Adding a new project
+
+- Add project path `members` under `<root>/Cargo.toml`
+
+```
+members = [
+  "fn/authorizer"
+  "fn/your-function"
+]
+```
+
+- Call `cargo lambda new your-function` under `fn/` directory
+
+# References
 
 https://aws.amazon.com/blogs/mobile/appsync-lambda-auth/
 https://auth0.com/docs/customize/integrations/aws/aws-api-gateway-custom-authorizers
