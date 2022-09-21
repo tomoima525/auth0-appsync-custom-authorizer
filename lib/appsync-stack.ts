@@ -30,26 +30,40 @@ export class AppSyncSetup extends Construct {
     });
 
     // authorizer
-    const authorizerLambda = new lambda_nodejs.NodejsFunction(
-      this,
-      "AuthorizerHandler",
-      {
-        runtime: lambda.Runtime.NODEJS_16_X,
-        memorySize: 128,
-        handler: "handler",
-        entry: path.join(
-          `${__dirname}/../`,
-          "functions",
-          "authorizer/index.ts",
-        ),
-        environment: {
-          AUDIENCE,
-          TOKEN_ISSUER,
-          JWKS_URI,
-        },
-        logRetention: RetentionDays.ONE_WEEK,
+    const authorizerLambda = new lambda.Function(this, "test function", {
+      description: "Testing authorizer input",
+      code: lambda.Code.fromAsset("target/lambda/authorizer/bootstrap.zip"),
+      runtime: lambda.Runtime.PROVIDED_AL2,
+      handler: "bootstrap",
+      environment: {
+        RUST_BACKTRACE: "1",
+        AUDIENCE,
+        TOKEN_ISSUER,
+        JWKS_URI,
       },
-    );
+      logRetention: RetentionDays.ONE_WEEK,
+    });
+    // authorizer
+    // const authorizerLambda = new lambda_nodejs.NodejsFunction(
+    //   this,
+    //   "AuthorizerHandler",
+    //   {
+    //     runtime: lambda.Runtime.NODEJS_16_X,
+    //     memorySize: 128,
+    //     handler: "handler",
+    //     entry: path.join(
+    //       `${__dirname}/../`,
+    //       "functions",
+    //       "authorizer/index.ts",
+    //     ),
+    //     environment: {
+    //       AUDIENCE,
+    //       TOKEN_ISSUER,
+    //       JWKS_URI,
+    //     },
+    //     logRetention: RetentionDays.ONE_WEEK,
+    //   },
+    // );
 
     // Creates the AppSync API
     const api = new appsync.GraphqlApi(this, "GraphqlApi", {
