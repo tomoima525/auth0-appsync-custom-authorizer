@@ -1,0 +1,164 @@
+
+interface Character {
+	id: String!
+	name: String!
+	friends: [Character!]!
+	appearsIn: [Episode!]!
+}
+
+"""
+A mechanical creature in the Star Wars universe.
+"""
+type Droid implements Character {
+	"""
+	The id of the droid.
+	"""
+	id: String!
+	"""
+	The name of the droid.
+	"""
+	name: String!
+	"""
+	The friends of the droid, or an empty list if they have none.
+	"""
+	friends: [Character!]!
+	"""
+	Which movies they appear in.
+	"""
+	appearsIn: [Episode!]!
+	"""
+	The primary function of the droid.
+	"""
+	primaryFunction: String
+}
+
+type DroidConnection {
+	"""
+	Information to aid in pagination.
+	"""
+	pageInfo: PageInfo!
+	"""
+	A list of edges.
+	"""
+	edges: [DroidEdge!]!
+	"""
+	A list of nodes.
+	"""
+	nodes: [Droid!]!
+}
+
+"""
+An edge in a connection.
+"""
+type DroidEdge {
+	"""
+	A cursor for use in pagination
+	"""
+	cursor: String!
+	"""
+	The item at the end of the edge
+	"""
+	node: Droid!
+}
+
+"""
+One of the films in the Star Wars Trilogy
+"""
+enum Episode {
+	NEW_HOPE
+	EMPIRE
+	JEDI
+}
+
+
+"""
+A humanoid creature in the Star Wars universe.
+"""
+type Human implements Character {
+	"""
+	The id of the human.
+	"""
+	id: String!
+	"""
+	The name of the human.
+	"""
+	name: String!
+	"""
+	The friends of the human, or an empty list if they have none.
+	"""
+	friends: [Character!]!
+	"""
+	Which movies they appear in.
+	"""
+	appearsIn: [Episode!]!
+	"""
+	The home planet of the human, or null if unknown.
+	"""
+	homePlanet: String
+}
+
+type HumanConnection {
+	"""
+	Information to aid in pagination.
+	"""
+	pageInfo: PageInfo!
+	"""
+	A list of edges.
+	"""
+	edges: [HumanEdge!]!
+	"""
+	A list of nodes.
+	"""
+	nodes: [Human!]!
+}
+
+"""
+An edge in a connection.
+"""
+type HumanEdge {
+	"""
+	A cursor for use in pagination
+	"""
+	cursor: String!
+	"""
+	The item at the end of the edge
+	"""
+	node: Human!
+}
+
+
+
+"""
+Information about pagination in a connection
+"""
+type PageInfo {
+	"""
+	When paginating backwards, are there more items?
+	"""
+	hasPreviousPage: Boolean!
+	"""
+	When paginating forwards, are there more items?
+	"""
+	hasNextPage: Boolean!
+	"""
+	When paginating backwards, the cursor to continue.
+	"""
+	startCursor: String
+	"""
+	When paginating forwards, the cursor to continue.
+	"""
+	endCursor: String
+}
+
+type QueryRoot {
+	hero(episode: Episode): Character!
+	human(id: String!): Human
+	humans(after: String, before: String, first: Int, last: Int): HumanConnection!
+	droid(id: String!): Droid
+	droids(after: String, before: String, first: Int, last: Int): DroidConnection!
+}
+
+
+schema {
+	query: QueryRoot
+}
