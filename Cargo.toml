@@ -3,6 +3,8 @@
 members = [
   "fn/authorizer",
   "fn/helpers",
+  "fn/appsync",
   "models/starwars",
+  "models/events",
   "gql"
 ]

@@ -1,0 +1,17 @@
+
+type Event {
+	id: String!
+	name: String!
+}
+
+
+
+
+type Query {
+	eventGet: Event!
+}
+
+
+schema {
+	query: Query
+}
