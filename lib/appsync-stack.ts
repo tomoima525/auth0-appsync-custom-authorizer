@@ -30,8 +30,8 @@ export class AppSyncSetup extends Construct {
     });
 
     // authorizer
-    const authorizerLambda = new lambda.Function(this, "test function", {
-      description: "Testing authorizer input",
+    const authorizerLambda = new lambda.Function(this, "authorizer", {
+      description: "authorizer input",
       code: lambda.Code.fromAsset("target/lambda/authorizer/bootstrap.zip"),
       runtime: lambda.Runtime.PROVIDED_AL2,
       handler: "bootstrap",
@@ -43,7 +43,7 @@ export class AppSyncSetup extends Construct {
       },
       logRetention: RetentionDays.ONE_WEEK,
     });
-    // authorizer
+    // authorizer in TypeScript
     // const authorizerLambda = new lambda_nodejs.NodejsFunction(
     //   this,
     //   "AuthorizerHandler",
@@ -87,7 +87,8 @@ export class AppSyncSetup extends Construct {
         ],
       },
       schema: appsync.Schema.fromAsset(
-        path.join(`${__dirname}/../`, "graphql", "schema.graphql"),
+        path.join(`${__dirname}/../`, "gql", "events_schema.graphql"),
+        // path.join(`${__dirname}/../`, "graphql", "schema.graphql"),
       ),
       logConfig: {
         fieldLogLevel: appsync.FieldLogLevel.ERROR,
@@ -96,18 +97,29 @@ export class AppSyncSetup extends Construct {
       xrayEnabled: true,
     });
 
-    // lambda that handles appsync request
-    const appSyncHandlerLambda = new lambda_nodejs.NodejsFunction(
-      this,
-      "AppSyncHandler",
-      {
-        runtime: lambda.Runtime.NODEJS_16_X,
-        memorySize: 256,
-        handler: "handler",
-        entry: path.join(`${__dirname}/../`, "functions", "appSync/index.ts"),
-        logRetention: RetentionDays.ONE_WEEK,
+    // lambda that handles appsync request in TypeScript
+    // const appSyncHandlerLambda = new lambda_nodejs.NodejsFunction(
+    //   this,
+    //   "AppSyncHandler",
+    //   {
+    //     runtime: lambda.Runtime.NODEJS_16_X,
+    //     memorySize: 256,
+    //     handler: "handler",
+    //     entry: path.join(`${__dirname}/../`, "functions", "appSync/index.ts"),
+    //     logRetention: RetentionDays.ONE_WEEK,
+    //   },
+    // );
+
+    const appSyncHandlerLambda = new lambda.Function(this, "AppSyncHandler", {
+      description: "appsync handler in Rust",
+      code: lambda.Code.fromAsset("target/lambda/appsync/bootstrap.zip"),
+      runtime: lambda.Runtime.PROVIDED_AL2,
+      handler: "bootstrap",
+      environment: {
+        RUST_BACKTRACE: "1",
       },
-    );
+      logRetention: RetentionDays.ONE_WEEK,
+    });
 
     // DataSource: Allow AppSync invoke Lambda function
     const dataSourceIamRole = new iam.Role(this, "DataSourceIamRole", {
